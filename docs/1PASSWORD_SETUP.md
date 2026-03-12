@@ -57,12 +57,12 @@ This document lists all required 1Password items and fields for the homelab-komo
 
 | Field Name | Type | Description | Example |
 |------------|------|-------------|---------|
-| `username` | Text | GitHub username for repository access | `brumi1024` |
+| `username` | Text | GitHub username for repository access | `simtel12` |
 | `token` | Password | GitHub personal access token | `ghp_xxxxxxxxxxxx` |
 
 **Note**: The GitHub token needs repository read access for:
-- `brumi1024/deploy-komodo-op` (komodo-op stack definitions)
-- `brumi1024/homelab-komodo-stacks` (application stack definitions)
+- `simtel12/deploy-komodo-op` (komodo-op stack definitions)
+- `simtel12/homelab-komodo-stacks` (application stack definitions)
 
 ### 4. Komodo Homelab Credentials File
 

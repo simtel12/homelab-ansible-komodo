@@ -207,15 +207,15 @@ all:
     komodo_periphery_port: 8120
     
     # Resource Syncs Configuration (GitOps) - REQUIRED
-    komodo_resource_syncs_repo: "brumi1024/komodo-resource-syncs"
+    komodo_resource_syncs_repo: "simtel12/komodo-resource-syncs"
     komodo_resource_syncs_branch: "main"
-    komodo_resource_syncs_git_account: "brumi1024"
+    komodo_resource_syncs_git_account: "simtel12"
 
     # Secret Management
     enable_komodo_op: true  # Enable 1Password integration
 
     # Individual sync repositories (defined in komodo-resource-syncs repo)
-    # app_stacks_repo: "brumi1024/komodo-app-stacks"  # Reference only
+    # app_stacks_repo: "simtel12/komodo-app-stacks"  # Reference only
 ```
 
 ## Secret Management
@@ -239,20 +239,20 @@ See [1Password Setup Guide](docs/1PASSWORD_SETUP.md) for detailed configuration 
 
 The infrastructure uses a centralized resource sync approach:
 
-1. **komodo-resource-syncs**: Meta-sync repository at `brumi1024/komodo-resource-syncs`
+1. **komodo-resource-syncs**: Meta-sync repository at `simtel12/komodo-resource-syncs`
    - Contains `syncs.toml` defining all resource syncs
    - Automatically creates and manages individual syncs
    - Single source of truth for GitOps configuration
    - Repository URLs are defined in this repo, not in local ansible inventory
 
 2. **komodo-op-sync**: Infrastructure deployment (auto-deploy enabled)
-   - Source: `brumi1024/deploy-komodo-op`
+   - Source: `simtel12/deploy-komodo-op`
    - Provides 1Password Connect server
    - Syncs secrets from 1Password vaults
    - Creates environment variables in Komodo
 
 3. **komodo-app-stacks**: Application deployments (manual deploy for safety)
-   - Source: `brumi1024/komodo-app-stacks`
+   - Source: `simtel12/komodo-app-stacks`
    - Auto-pulls latest definitions on changes
    - Requires manual deployment approval
    - Uses secrets synchronized via komodo-op

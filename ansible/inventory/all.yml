@@ -49,9 +49,9 @@ all:
     # NOTE: komodo-op repository is now defined in komodo-resource-syncs, not here
 
     # Resource Syncs Configuration (GitOps)
-    komodo_resource_syncs_repo: "brumi1024/komodo-resource-syncs"
+    komodo_resource_syncs_repo: "simtel12/komodo-resource-syncs"
     komodo_resource_syncs_branch: "main"
-    komodo_resource_syncs_git_account: "brumi1024"
+    komodo_resource_syncs_git_account: "simtel12"
 
 
   children:
