@@ -1,0 +1,47 @@
+---
+# Deploy Komodo Resource Syncs and komodo-op Stack
+# This playbook creates the meta-sync that manages both komodo-op and application stacks
+
+- name: Deploy Komodo Resource Syncs
+  hosts: localhost
+  gather_facts: false
+  vars:
+    komodo_port: "{{ hostvars[groups['core'][0]]['komodo_port'] }}"
+    komodo_base_url: "http://{{ hostvars[groups['core'][0]]['ansible_host'] }}:{{ komodo_port }}"
+    komodo_api_key: "{{ lookup('community.general.onepassword', 'Komodo', field='komodo_api_key', vault='Homelab Ansible') }}"
+    komodo_api_secret: "{{ lookup('community.general.onepassword', 'Komodo', field='komodo_api_secret', vault='Homelab Ansible') }}"
+
+  tasks:
+    - name: Create komodo resource syncs meta-sync
+      ansible.builtin.include_tasks: ../tasks/komodo_sync_operations.yml
+      vars:
+        sync_config:
+          name: "komodo-resource-syncs"
+          repo: "{{ komodo_resource_syncs_repo }}"
+          branch: "{{ komodo_resource_syncs_branch }}"
+          git_account: "{{ komodo_resource_syncs_git_account }}"
+          resource_path: "syncs.toml"
+          managed: true
+          match_tags: ["sync"]
+        trigger_sync: true
+        wait_for_sync_completion: true
+        sync_wait_retries: 30
+        sync_wait_delay: 10
+
+    - name: Wait for created syncs to appear
+      ansible.builtin.uri:
+        url: "{{ komodo_base_url }}/read"
+        method: POST
+        headers:
+          X-Api-Key: "{{ komodo_api_key }}"
+          X-Api-Secret: "{{ komodo_api_secret }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          type: "ListResourceSyncs"
+          params: {}
+        status_code: 200
+      register: list_syncs_result
+      until: list_syncs_result.json | selectattr('name', 'equalto', 'komodo-app-stacks') | list | length > 0
+      retries: 15
+      delay: 10
